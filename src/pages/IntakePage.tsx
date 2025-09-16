@@ -65,7 +65,7 @@ export const IntakePage: React.FC = () => {
       console.log('Submission successful:', result);
       setSubmitState('finished');
       setWorkflowCompleted(true);
-      setWorkflowMessage('Workflow completed! You could now start generating the Dashboard.');
+      setWorkflowMessage('Workflow completed! You could now start generating the Dashboard. OR You could visit the candidate database via this LINK:');
       
       // Show success toast
       setToast({
@@ -188,7 +188,12 @@ export const IntakePage: React.FC = () => {
                         </svg>
                       </div>
                     )}
-                    <p className="text-sm font-medium text-primary">{workflowMessage}</p>
+                    <p className="text-sm font-medium text-primary">
+                      {workflowMessage}
+                     {workflowMessage.includes('LINK:') && <a href="https://docs.google.com/spreadsheets/d/1_EEcJwL1AhfWXjdesahqi91zPKRvtsLDUOMbCOo-PhY/edit?pli=1&gid=1781793567#gid=1781793567" target="_blank" rel="noopener noreferrer" className="font-semibold underline">
+                       "Click Here"
+                         </a>}
+                     </p>
                   </div>
                 </div>
               )}
