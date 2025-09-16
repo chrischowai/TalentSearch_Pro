@@ -1,6 +1,6 @@
 import { IntakeFormData } from '../types';
 
-const API_ENDPOINT = 'https://n8nchrischowai.zeabur.app/webhook/1c39608f-289e-45ce-bb1c-7f0bbf5730c2';
+const API_ENDPOINT = 'https://chrischowai.zeabur.app/webhook/1c39608f-289e-45ce-bb1c-7f0bbf5730c2';
 
 export const buildPayload = (formData: IntakeFormData) => {
   return {
