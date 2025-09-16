@@ -14,7 +14,7 @@ export const DashboardPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   
   // Filter state
-  const [experienceRange, setExperienceRange] = useState<[number, number]>([0, 30]);
+  const [sittingScoreRange, setsittingScoreRange] = useState<[number, number]>([0, 100]);
   const [qualification, setQualification] = useState('All');
   const [keyword, setKeyword] = useState('');
   const [debouncedKeyword, setDebouncedKeyword] = useState('');
@@ -34,8 +34,8 @@ export const DashboardPage: React.FC = () => {
   // Filter candidates based on current filters
   const filteredCandidates = useMemo(() => {
     return allCandidates.filter(candidate => {
-      // Experience filter
-      if (candidate.years_experience < experienceRange[0] || candidate.years_experience > experienceRange[1]) return false;
+      // sittingScore filter
+      if (candidate.years_sittingScore < sittingScoreRange[0] || candidate.years_sittingScore > sittingScoreRange[1]) return false;
       
       // Qualification filter
       if (qualification !== 'All' && candidate.qualification !== qualification) return false;
@@ -59,11 +59,11 @@ export const DashboardPage: React.FC = () => {
       
       return true;
     });
-  }, [allCandidates, experienceRange, qualification, debouncedKeyword]);
+  }, [allCandidates, sittingScoreRange, qualification, debouncedKeyword]);
 
-  // Get data max experience for slider
-  const dataMaxExperience = useMemo(() => {
-    return Math.max(...allCandidates.map(c => c.years_experience), 30);
+  // Get data max sittingScore for slider
+  const dataMaxsittingScore = useMemo(() => {
+    return Math.max(...allCandidates.map(c => c.years_sittingScore), 100);
   }, [allCandidates]);
 
   // Load candidate data
@@ -75,9 +75,9 @@ export const DashboardPage: React.FC = () => {
         const data = await GoogleSheetsService.fetchCandidateData();
         setAllCandidates(data);
         
-        // Set initial experience range based on data
-        const maxExp = Math.max(...data.map(c => c.years_experience), 30);
-        setExperienceRange([0, Math.min(30, maxExp)]);
+        // Set initial sittingScore range based on data
+        const maxExp = Math.max(...data.map(c => c.years_sittingScore), 100);
+        setsittingScoreRange([0, Math.min(100, maxExp)]);
       } catch (err) {
         setError('Failed to load candidate data');
         console.error('Error loading candidate data:', err);
@@ -105,8 +105,8 @@ export const DashboardPage: React.FC = () => {
   };
 
   // Handler for filter changes
-  const handleExperienceRangeChange = useCallback((value: [number, number]) => {
-    setExperienceRange(value);
+  const handlesittingScoreRangeChange = useCallback((value: [number, number]) => {
+    setsittingScoreRange(value);
   }, []);
 
   const handleQualificationChange = useCallback((value: string) => {
@@ -182,13 +182,13 @@ export const DashboardPage: React.FC = () => {
           {/* Filters (2/3 width) */}
           <div className="lg:col-span-2">
             <FilterPanel
-              experienceRange={experienceRange}
+              sittingScoreRange={sittingScoreRange}
               qualification={qualification}
               keyword={keyword}
-              onExperienceRangeChange={handleExperienceRangeChange}
+              onsittingScoreRangeChange={handlesittingScoreRangeChange}
               onQualificationChange={handleQualificationChange}
               onKeywordChange={handleKeywordChange}
-              dataMaxExperience={dataMaxExperience}
+              dataMaxsittingScore={dataMaxsittingScore}
             />
           </div>
           
@@ -235,7 +235,7 @@ export const DashboardPage: React.FC = () => {
             </p>
             <Button
               onClick={() => {
-                setExperienceRange([0, dataMaxExperience]);
+                setsittingScoreRange([0, dataMaxsittingScore]);
                 setQualification('All');
                 setKeyword('');
               }}
