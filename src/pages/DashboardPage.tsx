@@ -12,35 +12,38 @@ export const DashboardPage: React.FC = () => {
   const [allCandidates, setAllCandidates] = useState<CandidateData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Filter state
-  const [fittingScoreRange, setfittingScoreRange] = useState<[number, number]>([0, 100]);
+  const [fittingScoreRange, setFittingScoreRange] = useState<[number, number]>([
+    0,
+    100,
+  ]);
   const [qualification, setQualification] = useState('All');
   const [keyword, setKeyword] = useState('');
   const [debouncedKeyword, setDebouncedKeyword] = useState('');
-  
-  // Hover state
-  const [hoveredCandidate, setHoveredCandidate] = useState<CandidateData | null>(null);
 
-  // Debounce keyword search
+  // Hover state
+  const [hoveredCandidate, setHoveredCandidate] =
+    useState<CandidateData | null>(null);
+
+  // Debounce keyword
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedKeyword(keyword);
     }, 300);
-    
     return () => clearTimeout(timer);
   }, [keyword]);
 
-  // Filter candidates based on current filters
+  // Filter logic
   const filteredCandidates = useMemo(() => {
-    return allCandidates.filter(candidate => {
-      // fittingScore filter
-      if (candidate.years_fittingScore < fittingScoreRange[0] || candidate.years_fittingScore > fittingScoreRange[1]) return false;
-      
-      // Qualification filter
-      if (qualification !== 'All' && candidate.qualification !== qualification) return false;
-      
-      // Keyword filter
+    return allCandidates.filter((candidate) => {
+      if (
+        candidate.years_fittingScore < fittingScoreRange ||
+        candidate.years_fittingScore > fittingScoreRange[18]
+      )
+        return false;
+      if (qualification !== 'All' && candidate.qualification !== qualification)
+        return false;
       if (debouncedKeyword) {
         const searchText = debouncedKeyword.toLowerCase();
         const candidateText = [
@@ -49,24 +52,23 @@ export const DashboardPage: React.FC = () => {
           candidate.current_company,
           candidate.industry,
           candidate.key_skills,
-          candidate.linkedin_snippet
-        ].join(' ').toLowerCase();
-        
-        // Support multiple keywords (AND logic)
-        const keywords = searchText.split(' ').filter(k => k.trim());
-        if (!keywords.every(keyword => candidateText.includes(keyword))) return false;
+          candidate.linkedin_snippet,
+        ]
+          .join(' ')
+          .toLowerCase();
+        const keywords = searchText.split(' ').filter((k) => k.trim());
+        if (!keywords.every((kw) => candidateText.includes(kw)))
+          return false;
       }
-      
       return true;
     });
   }, [allCandidates, fittingScoreRange, qualification, debouncedKeyword]);
 
-  // Get data max fittingScore for slider
   const dataMaxfittingScore = useMemo(() => {
-    return Math.max(...allCandidates.map(c => c.years_fittingScore), 100);
+    return Math.max(...allCandidates.map((c) => c.years_fittingScore), 100);
   }, [allCandidates]);
 
-  // Load candidate data
+  // Load data
   useEffect(() => {
     const loadCandidateData = async () => {
       try {
@@ -74,10 +76,12 @@ export const DashboardPage: React.FC = () => {
         setError(null);
         const data = await GoogleSheetsService.fetchCandidateData();
         setAllCandidates(data);
-        
-        // Set initial fittingScore range based on data
-        const maxExp = Math.max(...data.map(c => c.years_fittingScore), 100);
-        setfittingScoreRange([0, Math.min(100, maxExp)]);
+
+        const maxScore = Math.max(
+          ...data.map((c) => c.years_fittingScore),
+          100
+        );
+        setFittingScoreRange([0, Math.min(100, maxScore)]);
       } catch (err) {
         setError('Failed to load candidate data');
         console.error('Error loading candidate data:', err);
@@ -85,11 +89,9 @@ export const DashboardPage: React.FC = () => {
         setLoading(false);
       }
     };
-
     loadCandidateData();
   }, []);
 
-  // Clear hovered candidate if it's no longer in filtered results
   useEffect(() => {
     if (hoveredCandidate && !filteredCandidates.includes(hoveredCandidate)) {
       setHoveredCandidate(null);
@@ -104,10 +106,13 @@ export const DashboardPage: React.FC = () => {
     window.location.reload();
   };
 
-  // Handler for filter changes
-  const handlefittingScoreRangeChange = useCallback((value: [number, number]) => {
-    setfittingScoreRange(value);
-  }, []);
+  // Handlers
+  const handleFittingScoreRangeChange = useCallback(
+    (value: [number, number]) => {
+      setFittingScoreRange(value);
+    },
+    []
+  );
 
   const handleQualificationChange = useCallback((value: string) => {
     setQualification(value);
@@ -117,9 +122,12 @@ export const DashboardPage: React.FC = () => {
     setKeyword(value);
   }, []);
 
-  const handleCandidateHover = useCallback((candidate: CandidateData | null) => {
-    setHoveredCandidate(candidate);
-  }, []);
+  const handleCandidateHover = useCallback(
+    (candidate: CandidateData | null) => {
+      setHoveredCandidate(candidate);
+    },
+    []
+  );
 
   if (loading) {
     return (
@@ -127,7 +135,9 @@ export const DashboardPage: React.FC = () => {
         <div className="text-center space-y-4">
           <Loader2 className="h-12 w-12 animate-spin mx-auto text-primary" />
           <h2 className="text-xl font-semibold">Loading Dashboard</h2>
-          <p className="text-muted-foreground">Fetching candidate data from Google Sheets...</p>
+          <p className="text-muted-foreground">
+            Fetching candidate data from Google Sheets...
+          </p>
         </div>
       </div>
     );
@@ -158,17 +168,11 @@ export const DashboardPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-6 max-w-7xl">
-        {/* Header */}
         <header className="mb-6">
-          <Button
-            variant="outline"
-            onClick={handleGoBack}
-            className="mb-4"
-          >
+          <Button variant="outline" onClick={handleGoBack} className="mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Intake
           </Button>
-          
           <h1 className="text-3xl font-bold text-foreground mb-2">
             LinkedIn Candidate Insights Dashboard
           </h1>
@@ -177,30 +181,24 @@ export const DashboardPage: React.FC = () => {
           </p>
         </header>
 
-        {/* Filters and Key Metrics in same row */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          {/* Filters (2/3 width) */}
           <div className="lg:col-span-2">
             <FilterPanel
               fittingScoreRange={fittingScoreRange}
               qualification={qualification}
               keyword={keyword}
-              onfittingScoreRangeChange={handlefittingScoreRangeChange}
+              onFittingScoreRangeChange={handleFittingScoreRangeChange}
               onQualificationChange={handleQualificationChange}
               onKeywordChange={handleKeywordChange}
               dataMaxfittingScore={dataMaxfittingScore}
             />
           </div>
-          
-          {/* Key Metrics (1/3 width) */}
           <div className="lg:col-span-1">
             <KeyMetrics candidates={filteredCandidates} />
           </div>
         </div>
 
-        {/* Main Dashboard Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
-          {/* Left side - Scatter Plot (75% width) */}
           <div className="lg:col-span-3">
             <div className="bg-card border rounded-lg p-6">
               <CandidateScatterPlot
@@ -210,14 +208,11 @@ export const DashboardPage: React.FC = () => {
               />
             </div>
           </div>
-
-          {/* Right side - Candidate View (25% width) */}
           <div className="lg:col-span-1">
             <CandidateViewCorner candidate={hoveredCandidate} />
           </div>
         </div>
 
-        {/* Bottom - Top Candidates Table */}
         <div className="mb-6">
           <TopCandidatesTable
             candidates={filteredCandidates}
@@ -225,17 +220,18 @@ export const DashboardPage: React.FC = () => {
           />
         </div>
 
-        {/* No results state */}
         {filteredCandidates.length === 0 && allCandidates.length > 0 && (
           <div className="text-center py-12">
             <AlertCircle className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-            <h3 className="text-xl font-semibold mb-2">No candidates match current filters</h3>
+            <h3 className="text-xl font-semibold mb-2">
+              No candidates match current filters
+            </h3>
             <p className="text-muted-foreground mb-4">
               Try adjusting your filter criteria to see more results.
             </p>
             <Button
               onClick={() => {
-                setfittingScoreRange([0, dataMaxfittingScore]);
+                setFittingScoreRange([0, dataMaxfittingScore]);
                 setQualification('All');
                 setKeyword('');
               }}
