@@ -5,42 +5,42 @@ import { Input } from './ui/input';
 import { Search } from 'lucide-react';
 
 interface FilterPanelProps {
-  experienceRange: [number, number];
+  fittingScoreRange: [number, number];
   qualification: string;
   keyword: string;
-  onExperienceRangeChange: (value: [number, number]) => void;
+  onfittingScoreChange: (value: [number, number]) => void;
   onQualificationChange: (value: string) => void;
   onKeywordChange: (value: string) => void;
-  dataMaxExperience: number;
+  dataMaxfittingScore: number;
 }
 
 export const FilterPanel: React.FC<FilterPanelProps> = ({
-  experienceRange,
+  fittingScoreRange,
   qualification,
   keyword,
-  onExperienceRangeChange,
+  onfittingScoreChange,
   onQualificationChange,
   onKeywordChange,
-  dataMaxExperience
+  dataMaxfittingScore
 }) => {
-  const displayMaxExperience = Math.min(30, dataMaxExperience);
+  const displayMaxfittingScore = Math.min(100, dataMaxfittingScore);
 
   return (
     <div className="bg-card border rounded-lg p-4 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Experience Filter */}
+        {/* fittingScore Filter */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-foreground">
-            Experience: {experienceRange[0]}-{experienceRange[1]} years
+            Fitting Score: {fittingScoreRange[0]}-{fittingScoreRange[100]}
           </label>
           <Slider
-            value={experienceRange}
-            onValueChange={(value) => onExperienceRangeChange([value[0], value[1]])}
-            max={displayMaxExperience}
+            value={fittingScoreRange}
+            onValueChange={(value) => onfittingScoreChange([value[0], value[100]])}
+            max={displayfittingScore}
             min={0}
-            step={1}
+            step={10}
             className="w-full"
-            aria-label="Experience range filter"
+            aria-label="Fitting Score range filter"
           />
         </div>
 
