@@ -39,7 +39,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             max={displayfittingScore}
             min={0}
             step={10}
-            className="w-full"
+            className="w-full [&_.bg-primary]:bg-purple-500 [&_[data-state]]:border-purple-500"
             aria-label="Fitting Score range filter"
           />
         </div>
