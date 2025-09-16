@@ -1,6 +1,12 @@
 import React from 'react';
 import { Slider } from './ui/slider';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select';
 import { Input } from './ui/input';
 import { Search } from 'lucide-react';
 
@@ -8,7 +14,7 @@ interface FilterPanelProps {
   fittingScoreRange: [number, number];
   qualification: string;
   keyword: string;
-  onfittingScoreChange: (value: [number, number]) => void;
+  onFittingScoreRangeChange: (value: [number, number]) => void;
   onQualificationChange: (value: string) => void;
   onKeywordChange: (value: string) => void;
   dataMaxfittingScore: number;
@@ -18,25 +24,27 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   fittingScoreRange,
   qualification,
   keyword,
-  onfittingScoreChange,
+  onFittingScoreRangeChange,
   onQualificationChange,
   onKeywordChange,
-  dataMaxfittingScore
+  dataMaxfittingScore,
 }) => {
   const displayMaxfittingScore = Math.min(100, dataMaxfittingScore);
 
   return (
     <div className="bg-card border rounded-lg p-4 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* fittingScore Filter */}
+        {/* Fitting Score Filter */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-foreground">
-            Fitting Score: {fittingScoreRange[0]}-{fittingScoreRange[100]}
+            Fitting Score: {fittingScoreRange}-{fittingScoreRange[18]}
           </label>
           <Slider
             value={fittingScoreRange}
-            onValueChange={(value) => onfittingScoreChange([value[0], value[100]])}
-            max={displayfittingScore}
+            onValueChange={(value) =>
+              onFittingScoreRangeChange([value, value[18]])
+            }
+            max={displayMaxfittingScore}
             min={0}
             step={10}
             className="w-full [&_.bg-primary]:bg-purple-500 [&_[data-state]]:border-purple-500"
@@ -81,5 +89,5 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         </div>
       </div>
     </div>
-  );
+);
 };
