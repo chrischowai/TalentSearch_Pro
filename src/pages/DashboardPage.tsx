@@ -34,12 +34,12 @@ export const DashboardPage: React.FC = () => {
     return () => clearTimeout(timer);
   }, [keyword]);
 
-  // Filter logic
+  // Filtered candidates
   const filteredCandidates = useMemo(() => {
     return allCandidates.filter((candidate) => {
       if (
         candidate.years_fittingScore < fittingScoreRange ||
-        candidate.years_fittingScore > fittingScoreRange[18]
+        candidate.years_fittingScore > fittingScoreRange[1]
       )
         return false;
       if (qualification !== 'All' && candidate.qualification !== qualification)
@@ -64,7 +64,7 @@ export const DashboardPage: React.FC = () => {
     });
   }, [allCandidates, fittingScoreRange, qualification, debouncedKeyword]);
 
-  const dataMaxfittingScore = useMemo(() => {
+  const dataMaxFittingScore = useMemo(() => {
     return Math.max(...allCandidates.map((c) => c.years_fittingScore), 100);
   }, [allCandidates]);
 
@@ -82,9 +82,8 @@ export const DashboardPage: React.FC = () => {
           100
         );
         setFittingScoreRange([0, Math.min(100, maxScore)]);
-      } catch (err) {
+      } catch {
         setError('Failed to load candidate data');
-        console.error('Error loading candidate data:', err);
       } finally {
         setLoading(false);
       }
@@ -92,40 +91,25 @@ export const DashboardPage: React.FC = () => {
     loadCandidateData();
   }, []);
 
+  // Clear hover if out of range
   useEffect(() => {
     if (hoveredCandidate && !filteredCandidates.includes(hoveredCandidate)) {
       setHoveredCandidate(null);
     }
   }, [filteredCandidates, hoveredCandidate]);
 
-  const handleGoBack = () => {
-    window.location.href = '/';
-  };
-
-  const handleRetry = () => {
-    window.location.reload();
-  };
+  const handleGoBack = () => (window.location.href = '/');
+  const handleRetry = () => window.location.reload();
 
   // Handlers
   const handleFittingScoreRangeChange = useCallback(
-    (value: [number, number]) => {
-      setFittingScoreRange(value);
-    },
+    (value: [number, number]) => setFittingScoreRange(value),
     []
   );
-
-  const handleQualificationChange = useCallback((value: string) => {
-    setQualification(value);
-  }, []);
-
-  const handleKeywordChange = useCallback((value: string) => {
-    setKeyword(value);
-  }, []);
-
+  const handleQualificationChange = useCallback((v: string) => setQualification(v), []);
+  const handleKeywordChange = useCallback((v: string) => setKeyword(v), []);
   const handleCandidateHover = useCallback(
-    (candidate: CandidateData | null) => {
-      setHoveredCandidate(candidate);
-    },
+    (c: CandidateData | null) => setHoveredCandidate(c),
     []
   );
 
@@ -168,6 +152,7 @@ export const DashboardPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-6 max-w-7xl">
+        {/* Header */}
         <header className="mb-6">
           <Button variant="outline" onClick={handleGoBack} className="mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -181,6 +166,7 @@ export const DashboardPage: React.FC = () => {
           </p>
         </header>
 
+        {/* Filters & Metrics */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           <div className="lg:col-span-2">
             <FilterPanel
@@ -190,7 +176,7 @@ export const DashboardPage: React.FC = () => {
               onFittingScoreRangeChange={handleFittingScoreRangeChange}
               onQualificationChange={handleQualificationChange}
               onKeywordChange={handleKeywordChange}
-              dataMaxfittingScore={dataMaxfittingScore}
+              dataMaxFittingScore={dataMaxFittingScore}
             />
           </div>
           <div className="lg:col-span-1">
@@ -198,6 +184,7 @@ export const DashboardPage: React.FC = () => {
           </div>
         </div>
 
+        {/* Main Dashboard */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
           <div className="lg:col-span-3">
             <div className="bg-card border rounded-lg p-6">
@@ -213,6 +200,7 @@ export const DashboardPage: React.FC = () => {
           </div>
         </div>
 
+        {/* Top Candidates */}
         <div className="mb-6">
           <TopCandidatesTable
             candidates={filteredCandidates}
@@ -220,6 +208,7 @@ export const DashboardPage: React.FC = () => {
           />
         </div>
 
+        {/* No Results */}
         {filteredCandidates.length === 0 && allCandidates.length > 0 && (
           <div className="text-center py-12">
             <AlertCircle className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
@@ -231,7 +220,7 @@ export const DashboardPage: React.FC = () => {
             </p>
             <Button
               onClick={() => {
-                setFittingScoreRange([0, dataMaxfittingScore]);
+                setFittingScoreRange([0, dataMaxFittingScore]);
                 setQualification('All');
                 setKeyword('');
               }}
