@@ -1,5 +1,10 @@
 import React from 'react';
-import { Slider } from './ui/slider';
+import {
+  Slider,
+  SliderTrack,
+  SliderRange,
+  SliderThumb,
+} from './ui/slider';
 import {
   Select,
   SelectContent,
@@ -17,7 +22,7 @@ interface FilterPanelProps {
   onFittingScoreRangeChange: (value: [number, number]) => void;
   onQualificationChange: (value: string) => void;
   onKeywordChange: (value: string) => void;
-  dataMaxfittingScore: number;
+  dataMaxFittingScore: number;
 }
 
 export const FilterPanel: React.FC<FilterPanelProps> = ({
@@ -27,9 +32,9 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   onFittingScoreRangeChange,
   onQualificationChange,
   onKeywordChange,
-  dataMaxfittingScore,
+  dataMaxFittingScore,
 }) => {
-  const displayMaxfittingScore = Math.min(100, dataMaxfittingScore);
+  const displayMax = Math.min(100, dataMaxFittingScore);
 
   return (
     <div className="bg-card border rounded-lg p-4 mb-6">
@@ -37,19 +42,23 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         {/* Fitting Score Filter */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-foreground">
-            Fitting Score: {fittingScoreRange}-{fittingScoreRange[18]}
+            Fitting Score: {fittingScoreRange}-{fittingScoreRange[1]}%
           </label>
           <Slider
             value={fittingScoreRange}
-            onValueChange={(value) =>
-              onFittingScoreRangeChange([value, value[18]])
-            }
-            max={displayMaxfittingScore}
+            onValueChange={onFittingScoreRangeChange}
             min={0}
-            step={10}
-            className="w-full [&_.bg-primary]:bg-purple-500 [&_[data-state]]:border-purple-500"
+            max={displayMax}
+            step={1}
             aria-label="Fitting Score range filter"
-          />
+            className="relative flex items-center select-none touch-none"
+          >
+            <SliderTrack className="bg-muted h-2 flex-1 rounded-full">
+              <SliderRange className="bg-purple-500 h-full rounded-full" />
+            </SliderTrack>
+            <SliderThumb className="block w-5 h-5 bg-white border-2 border-purple-500 rounded-full shadow" />
+            <SliderThumb className="block w-5 h-5 bg-white border-2 border-purple-500 rounded-full shadow" />
+          </Slider>
         </div>
 
         {/* Qualification Filter */}
