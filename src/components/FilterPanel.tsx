@@ -1,16 +1,12 @@
+// FilterPanel.tsx
 import React from 'react';
-import {
-  Slider,
-  SliderTrack,
-  SliderRange,
-  SliderThumb,
-} from './ui/slider';
+import { Slider } from './ui/slider';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from './ui/select';
 import { Input } from './ui/input';
 import { Search } from 'lucide-react';
@@ -32,33 +28,27 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   onFittingScoreRangeChange,
   onQualificationChange,
   onKeywordChange,
-  dataMaxFittingScore,
+  dataMaxFittingScore
 }) => {
-  const displayMax = Math.min(100, dataMaxFittingScore);
-
   return (
     <div className="bg-card border rounded-lg p-4 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Fitting Score Filter */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-foreground">
-            Fitting Score: {fittingScoreRange}-{fittingScoreRange[1]}%
+            Fitting Score: {fittingScoreRange[0]}–{fittingScoreRange[1]}
           </label>
           <Slider
             value={fittingScoreRange}
-            onValueChange={onFittingScoreRangeChange}
+            onValueChange={value =>
+              onFittingScoreRangeChange([value[0], value[1]])
+            }
             min={0}
-            max={displayMax}
+            max={dataMaxFittingScore}
             step={1}
+            className="w-full"
             aria-label="Fitting Score range filter"
-            className="relative flex items-center select-none touch-none"
-          >
-            <SliderTrack className="bg-muted h-2 flex-1 rounded-full">
-              <SliderRange className="bg-purple-500 h-full rounded-full" />
-            </SliderTrack>
-            <SliderThumb className="block w-5 h-5 bg-white border-2 border-purple-500 rounded-full shadow" />
-            <SliderThumb className="block w-5 h-5 bg-white border-2 border-purple-500 rounded-full shadow" />
-          </Slider>
+          />
         </div>
 
         {/* Qualification Filter */}
@@ -90,7 +80,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             <Input
               placeholder="Search skills, companies, titles..."
               value={keyword}
-              onChange={(e) => onKeywordChange(e.target.value)}
+              onChange={e => onKeywordChange(e.target.value)}
               className="pl-10"
               aria-label="Keyword search"
             />
@@ -98,5 +88,5 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         </div>
       </div>
     </div>
-);
+  );
 };
