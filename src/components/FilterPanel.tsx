@@ -6,7 +6,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from './ui/select';
 import { Input } from './ui/input';
 import { Search } from 'lucide-react';
@@ -28,7 +28,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   onFittingScoreRangeChange,
   onQualificationChange,
   onKeywordChange,
-  dataMaxFittingScore
+  dataMaxFittingScore,
 }) => {
   return (
     <div className="bg-card border rounded-lg p-4 mb-6">
@@ -40,7 +40,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           </label>
           <Slider
             value={fittingScoreRange}
-            onValueChange={value =>
+            onValueChange={(value) =>
               onFittingScoreRangeChange([value[0], value[1]])
             }
             min={0}
@@ -80,7 +80,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             <Input
               placeholder="Search skills, companies, titles..."
               value={keyword}
-              onChange={e => onKeywordChange(e.target.value)}
+              onChange={(e) => onKeywordChange(e.target.value)}
               className="pl-10"
               aria-label="Keyword search"
             />
