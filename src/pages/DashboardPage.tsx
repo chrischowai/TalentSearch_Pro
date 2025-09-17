@@ -1,3 +1,4 @@
+// DashboardPage.tsx
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Button } from '../components/ui/button';
 import { ArrowLeft, Loader2, AlertCircle, RefreshCw } from 'lucide-react';
@@ -13,20 +14,16 @@ export const DashboardPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Filter state
-  const [fittingScoreRange, setFittingScoreRange] = useState<[number, number]>([
-    0,
-    100,
-  ]);
+  // Fitting Score filter state (0–100)
+  const [fittingScoreRange, setFittingScoreRange] = useState<[number, number]>([0, 100]);
   const [qualification, setQualification] = useState('All');
   const [keyword, setKeyword] = useState('');
   const [debouncedKeyword, setDebouncedKeyword] = useState('');
 
   // Hover state
-  const [hoveredCandidate, setHoveredCandidate] =
-    useState<CandidateData | null>(null);
+  const [hoveredCandidate, setHoveredCandidate] = useState<CandidateData | null>(null);
 
-  // Debounce keyword
+  // Debounce keyword search
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedKeyword(keyword);
@@ -34,16 +31,23 @@ export const DashboardPage: React.FC = () => {
     return () => clearTimeout(timer);
   }, [keyword]);
 
-  // Filtered candidates
+  // Filter candidates
   const filteredCandidates = useMemo(() => {
-    return allCandidates.filter((candidate) => {
+    return allCandidates.filter(candidate => {
+      // Fitting Score filter
       if (
-        candidate.years_fittingScore < fittingScoreRange ||
-        candidate.years_fittingScore > fittingScoreRange[1]
-      )
+        candidate.fitting_score < fittingScoreRange[0] ||
+        candidate.fitting_score > fittingScoreRange[1]
+      ) {
         return false;
-      if (qualification !== 'All' && candidate.qualification !== qualification)
+      }
+
+      // Qualification filter
+      if (qualification !== 'All' && candidate.qualification !== qualification) {
         return false;
+      }
+
+      // Keyword filter
       if (debouncedKeyword) {
         const searchText = debouncedKeyword.toLowerCase();
         const candidateText = [
@@ -52,23 +56,24 @@ export const DashboardPage: React.FC = () => {
           candidate.current_company,
           candidate.industry,
           candidate.key_skills,
-          candidate.linkedin_snippet,
+          candidate.linkedin_snippet
         ]
           .join(' ')
           .toLowerCase();
-        const keywords = searchText.split(' ').filter((k) => k.trim());
-        if (!keywords.every((kw) => candidateText.includes(kw)))
+        const keywords = searchText.split(' ').filter(k => k.trim());
+        if (!keywords.every(k => candidateText.includes(k))) {
           return false;
+        }
       }
+
       return true;
     });
   }, [allCandidates, fittingScoreRange, qualification, debouncedKeyword]);
 
-  const dataMaxFittingScore = useMemo(() => {
-    return Math.max(...allCandidates.map((c) => c.years_fittingScore), 100);
-  }, [allCandidates]);
+  // Fixed slider max for fitting score
+  const dataMaxFittingScore = 100;
 
-  // Load data
+  // Load candidate data
   useEffect(() => {
     const loadCandidateData = async () => {
       try {
@@ -76,14 +81,10 @@ export const DashboardPage: React.FC = () => {
         setError(null);
         const data = await GoogleSheetsService.fetchCandidateData();
         setAllCandidates(data);
-
-        const maxScore = Math.max(
-          ...data.map((c) => c.years_fittingScore),
-          100
-        );
-        setFittingScoreRange([0, Math.min(100, maxScore)]);
-      } catch {
+        setFittingScoreRange([0, 100]);
+      } catch (err) {
         setError('Failed to load candidate data');
+        console.error('Error loading candidate data:', err);
       } finally {
         setLoading(false);
       }
@@ -91,27 +92,33 @@ export const DashboardPage: React.FC = () => {
     loadCandidateData();
   }, []);
 
-  // Clear hover if out of range
+  // Clear hover if filtered out
   useEffect(() => {
     if (hoveredCandidate && !filteredCandidates.includes(hoveredCandidate)) {
       setHoveredCandidate(null);
     }
   }, [filteredCandidates, hoveredCandidate]);
 
-  const handleGoBack = () => (window.location.href = '/');
-  const handleRetry = () => window.location.reload();
+  const handleGoBack = () => {
+    window.location.href = '/';
+  };
+  const handleRetry = () => {
+    window.location.reload();
+  };
 
-  // Handlers
-  const handleFittingScoreRangeChange = useCallback(
-    (value: [number, number]) => setFittingScoreRange(value),
-    []
-  );
-  const handleQualificationChange = useCallback((v: string) => setQualification(v), []);
-  const handleKeywordChange = useCallback((v: string) => setKeyword(v), []);
-  const handleCandidateHover = useCallback(
-    (c: CandidateData | null) => setHoveredCandidate(c),
-    []
-  );
+  // Handlers for filter changes
+  const handleFittingScoreRangeChange = useCallback((value: [number, number]) => {
+    setFittingScoreRange(value);
+  }, []);
+  const handleQualificationChange = useCallback((value: string) => {
+    setQualification(value);
+  }, []);
+  const handleKeywordChange = useCallback((value: string) => {
+    setKeyword(value);
+  }, []);
+  const handleCandidateHover = useCallback((candidate: CandidateData | null) => {
+    setHoveredCandidate(candidate);
+  }, []);
 
   if (loading) {
     return (
@@ -119,9 +126,7 @@ export const DashboardPage: React.FC = () => {
         <div className="text-center space-y-4">
           <Loader2 className="h-12 w-12 animate-spin mx-auto text-primary" />
           <h2 className="text-xl font-semibold">Loading Dashboard</h2>
-          <p className="text-muted-foreground">
-            Fetching candidate data from Google Sheets...
-          </p>
+          <p className="text-muted-foreground">Fetching candidate data from Google Sheets...</p>
         </div>
       </div>
     );
@@ -166,7 +171,7 @@ export const DashboardPage: React.FC = () => {
           </p>
         </header>
 
-        {/* Filters & Metrics */}
+        {/* Filters and Key Metrics */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           <div className="lg:col-span-2">
             <FilterPanel
@@ -184,7 +189,7 @@ export const DashboardPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Main Dashboard */}
+        {/* Main Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
           <div className="lg:col-span-3">
             <div className="bg-card border rounded-lg p-6">
@@ -200,7 +205,7 @@ export const DashboardPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Top Candidates */}
+        {/* Top Candidates Table */}
         <div className="mb-6">
           <TopCandidatesTable
             candidates={filteredCandidates}
@@ -208,7 +213,7 @@ export const DashboardPage: React.FC = () => {
           />
         </div>
 
-        {/* No Results */}
+        {/* No Results State */}
         {filteredCandidates.length === 0 && allCandidates.length > 0 && (
           <div className="text-center py-12">
             <AlertCircle className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
