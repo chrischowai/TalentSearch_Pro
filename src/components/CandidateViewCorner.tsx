@@ -92,8 +92,8 @@ export const CandidateViewCorner: React.FC<CandidateViewCornerProps> = ({ candid
 
       {truncatedSnippet && (
         <div>
-          <p className="text-sm text-muted-foreground mb-1">Snippet:</p>
-          <p className="text-xs text-foreground leading-relaxed font-bold">{truncatedSnippet}</p>
+          <p className="text-sm text-muted-foreground mb-1 font-bold">Snippet:</p>
+          <p className="text-xs text-foreground leading-relaxed ">{truncatedSnippet}</p>
         </div>
       )}
 
