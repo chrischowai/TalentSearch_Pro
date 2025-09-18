@@ -39,7 +39,7 @@ export const CandidateViewCorner: React.FC<CandidateViewCornerProps> = ({ candid
         <div className="flex-1">
           <h3 className="font-semibold text-foreground text-lg">{candidate.name}</h3>
           <p className="text-sm text-muted-foreground italic">{candidate.current_job_title}</p>
-          <p className="text-sm text-muted-foreground">{candidate.current_company}</p>
+          <p className="text-sm text-muted-foreground font-bold">{candidate.current_company}</p>
         </div>
         {candidate.photo_url && (
           <img 
@@ -92,8 +92,8 @@ export const CandidateViewCorner: React.FC<CandidateViewCornerProps> = ({ candid
 
       {truncatedSnippet && (
         <div>
-          <p className="text-sm text-muted-foreground mb-1">Summary:</p>
-          <p className="text-xs text-foreground leading-relaxed">{truncatedSnippet}</p>
+          <p className="text-sm text-muted-foreground mb-1">Snippet:</p>
+          <p className="text-xs text-foreground leading-relaxed font-bold">{truncatedSnippet}</p>
         </div>
       )}
 
