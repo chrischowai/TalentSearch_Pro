@@ -30,6 +30,9 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   onKeywordChange,
   dataMaxFittingScore,
 }) => {
+
+  const displayMaxFittingScore = Math.min(100, dataMaxFittingScore);
+  
   return (
     <div className="bg-card border rounded-lg p-4 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -43,8 +46,8 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             onValueChange={(value) =>
               onFittingScoreRangeChange([value[0], value[1]])
             }
+            max={displayMaxFittingScore}
             min={0}
-            max={dataMaxFittingScore}
             step={1}
             className="
                      w-full
