@@ -43,17 +43,12 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           </label>
           <Slider
             value={fittingScoreRange}
-            onValueChange={(value) =>
-              onFittingScoreRangeChange([value[0], value[1]])
-            }
+            onValueChange={(value) => onFittingScoreRangeChange([value[0], value[1]])}
             max={displayMaxFittingScore}
             min={0}
             step={1}
-            className="
-                     w-full
-                       [&_.bg-primary]:bg-blue-500      /* track fill stays purple */
-                       [&_.border-primary]:border-blue-500  /* BOTH thumbs have border-primary */
-                          "
+            className="w-full [&_.bg-primary]:bg-blue-500 [&_.border-primary]:border-blue-500"
+            aria-label="Fitting score range filter"
           />
         </div>
 
