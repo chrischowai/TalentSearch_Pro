@@ -1,6 +1,6 @@
 // FilterPanel.tsx
 import React from 'react';
-import { Slider } from './ui/slider';
+import * as SliderPrimitive from '@radix-ui/react-slider';
 import {
   Select,
   SelectContent,
@@ -30,9 +30,6 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   onKeywordChange,
   dataMaxFittingScore,
 }) => {
-
-  const displayMaxFittingScore = Math.min(100, dataMaxFittingScore);
-  
   return (
     <div className="bg-card border rounded-lg p-4 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -41,21 +38,28 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           <label className="text-sm font-medium text-foreground">
             Fitting Score: {fittingScoreRange[0]}–{fittingScoreRange[1]}
           </label>
-      <Slider
-  value={fittingScoreRange}
-  onValueChange={(value) =>
-    onFittingScoreRangeChange([value[0], value[1]])
-  }
-  min={0}
-  max={displayMaxFittingScore}
-  step={1}
-  className=" w-full
-    [&_.bg-primary]:bg-blue-500
-    [&_.border-primary]:blue-purple-500
-    
-  "
-  aria-label="Fitting score range filter"
-/>
+
+          <SliderPrimitive.Root
+            value={fittingScoreRange}
+            onValueChange={(val) =>
+              onFittingScoreRangeChange([val[0], val[1]])
+            }
+            min={0}
+            max={dataMaxFittingScore}
+            step={1}
+            className="relative flex w-full select-none items-center"
+            aria-label="Fitting Score range filter"
+          >
+            <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-secondary">
+              <SliderPrimitive.Range className="absolute h-full bg-primary" />
+            </SliderPrimitive.Track>
+
+            {/* first thumb */}
+            <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full bg-white border border-purple-500 relative z-10" />
+
+            {/* second thumb */}
+            <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full bg-white border border-purple-500 relative z-10" />
+          </SliderPrimitive.Root>
         </div>
 
         {/* Qualification Filter */}
