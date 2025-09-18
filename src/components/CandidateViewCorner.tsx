@@ -18,6 +18,16 @@ export const CandidateViewCorner: React.FC<CandidateViewCornerProps> = ({ candid
     );
   }
 
+   const getQualificationColor = (qualification: string) => {
+    switch (qualification.toLowerCase()) {
+      case 'doctor': return 'bg-red-500 text-white border-red-500';
+      case 'master': return 'bg-yellow-500 text-black border-yellow-500';
+      case 'degree': return 'bg-green-500 text-white border-green-500';
+      case 'below degree': return 'bg-black text-white border-black';
+      default: return 'bg-gray-500 text-white border-gray-500';
+    }
+     };
+  
   const skills = candidate.key_skills ? candidate.key_skills.split(/[,;]/).map(s => s.trim()).filter(s => s) : [];
   const truncatedSnippet = candidate.linkedin_snippet && candidate.linkedin_snippet.length > 200 
     ? candidate.linkedin_snippet.substring(0, 200) + '...'
@@ -28,7 +38,7 @@ export const CandidateViewCorner: React.FC<CandidateViewCornerProps> = ({ candid
       <div className="flex items-start gap-3">
         <div className="flex-1">
           <h3 className="font-semibold text-foreground text-lg">{candidate.name}</h3>
-          <p className="text-sm text-muted-foreground">{candidate.current_job_title}</p>
+          <p className="text-sm text-muted-foreground italic">{candidate.current_job_title}</p>
           <p className="text-sm text-muted-foreground">{candidate.current_company}</p>
         </div>
         {candidate.photo_url && (
@@ -56,7 +66,7 @@ export const CandidateViewCorner: React.FC<CandidateViewCornerProps> = ({ candid
         
         <div className="flex justify-between">
           <span className="text-sm text-muted-foreground">Qualification:</span>
-          <Badge variant="outline" className="text-xs">
+          <Badge className={`text-xs ${getQualificationColor(candidate.qualification)}`}>
             {candidate.qualification}
           </Badge>
         </div>
