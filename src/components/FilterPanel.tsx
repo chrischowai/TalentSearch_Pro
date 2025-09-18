@@ -35,7 +35,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   
   return (
     <div className="bg-card border rounded-lg p-4 mb-6">
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Fitting Score Filter */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-foreground">
@@ -49,10 +49,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   min={0}
   max={displayMaxFittingScore}
   step={1}
-  className="
+  className=" w-full
     [&_.bg-primary]:bg-blue-500
     [&_.border-primary]:blue-purple-500
-     w-full
+    
   "
   aria-label="Fitting score range filter"
 />
