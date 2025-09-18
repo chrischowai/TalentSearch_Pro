@@ -41,15 +41,21 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           <label className="text-sm font-medium text-foreground">
             Fitting Score: {fittingScoreRange[0]}–{fittingScoreRange[1]}
           </label>
-          <Slider
-            value={fittingScoreRange}
-            onValueChange={(value) => onFittingScoreRangeChange([value[0], value[1]])}
-            max={displayMaxFittingScore}
-            min={0}
-            step={1}
-            className="w-full [&_.bg-primary]:bg-purple-500 [&_[data-state]]:border-purple-500"
-            aria-label="Fitting score range filter"
-          />
+      <Slider
+  value={fittingScoreRange}
+  onValueChange={(value) =>
+    onFittingScoreRangeChange([value[0], value[1]])
+  }
+  min={0}
+  max={displayMaxFittingScore}
+  step={1}
+  className="
+    w-full
+    [&_.bg-primary]:bg-purple-500
+    [&_.border-primary]:border-purple-500
+  "
+  aria-label="Fitting score range filter"
+/>
         </div>
 
         {/* Qualification Filter */}
