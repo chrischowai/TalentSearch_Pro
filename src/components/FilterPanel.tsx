@@ -46,8 +46,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             min={0}
             max={dataMaxFittingScore}
             step={1}
-            className="w-full [&_.bg-primary]:bg-purple-500 [&_[data-state]]:border-purple-500"
-            aria-label="Fitting Score range filter"
+            className="
+                     w-full
+                       [&_.bg-primary]:bg-blue-500      /* track fill stays purple */
+                       [&_.border-primary]:border-blue-500  /* BOTH thumbs have border-primary */
+                          "
           />
         </div>
 
