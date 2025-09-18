@@ -36,7 +36,7 @@ const CustomTooltip = ({ active, payload, onCandidateHover }: TooltipProps<numbe
         <div className="space-y-1 text-sm">
           <p><span className="text-muted-foreground">Title:</span> {data.current_job_title}</p>
           <p><span className="text-muted-foreground">Company:</span> {data.current_company}</p>
-          <p><span className="text-muted-foreground">Fitting Score:</span> {Math.round(data.original_fitting_score || data.fitting_score)}%</p>
+          <p><span className="text-muted-foreground">Fitting Score:</span> {Math.round(data.original_fitting_score || data.fitting_score)}</p>
           <p><span className="text-muted-foreground">Experience:</span> {Math.round(data.original_years_experience || data.years_experience)} years</p>
           <p><span className="text-muted-foreground">Qualification:</span> {data.qualification}</p>
         </div>
@@ -152,11 +152,11 @@ export const CandidateScatterPlot: React.FC<CandidateScatterPlotProps> = ({
             <YAxis
               type="number"
               dataKey="fitting_score"
-              name="Fitting Score (%)"
+              name="Fitting Score"
               domain={[0, 100]}
               tickCount={11}
               tick={{ fontSize: 12, fill: '#666' }}
-              label={{ value: 'Fitting Score (%)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fontSize: 12, fill: '#666', fontWeight: 'bold' } }}
+              label={{ value: 'Fitting Score', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fontSize: 12, fill: '#666', fontWeight: 'bold' } }}
             />
             <Tooltip
               content={<CustomTooltip onCandidateHover={onCandidateHover} />}
