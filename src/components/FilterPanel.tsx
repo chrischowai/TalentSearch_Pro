@@ -55,10 +55,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             </SliderPrimitive.Track>
 
             {/* first thumb */}
-            <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full bg-black border border-black-500 relative z-15" />
+            <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full bg-white border-[3px] border-solid border-black relative z-15" />
 
             {/* second thumb */}
-            <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full bg-black border border-black-500 relative z-15" />
+            <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full bg-white border-[3px] border-solid border-black relative z-15" />
           </SliderPrimitive.Root>
         </div>
 
