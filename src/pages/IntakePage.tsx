@@ -41,8 +41,8 @@ export const IntakePage: React.FC = () => {
   // Form validation
   const canSubmit = isFormValid(jobTitle, numberOfProfiles, batch, scoringTable.rows) && 
                     scoringTable.totalStatus === 'valid';
-  const canGenerateReport = workflowCompleted; // Only allow after workflow completion
-
+  const canGenerateReport = true; // Always allow report generation
+  
   // Handlers
   const handleSubmit = useCallback(async () => {
     if (!canSubmit || submitState !== 'idle') return;
@@ -90,8 +90,8 @@ export const IntakePage: React.FC = () => {
     if (!canGenerateReport) return;
     
     // Navigate to dashboard - in a real app this would use router
-    window.location.href = '/dashboard';
-  }, [canGenerateReport]);
+     window.location.href = '/dashboard';
+  }, []);
 
   const handleReset = useCallback(() => {
     const confirmed = window.confirm('Reset all inputs? This action cannot be undone.');
