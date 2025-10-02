@@ -179,9 +179,9 @@ export const DashboardPage: React.FC = () => {
               <Button 
                 variant="secondary" 
                 onClick={handleGoBack} 
-                className="bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-sm"
+                className="bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-sm px-6 py-3 text-lg font-bold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
               >
-                <ArrowLeft className="h-4 w-4 mr-2" />
+                <ArrowLeft className="h-5 w-5 mr-3" />
                 Back to Intake
               </Button>
             </div>
@@ -315,25 +315,19 @@ export const DashboardPage: React.FC = () => {
           </div>
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-lg shadow-slate-200/50 border border-slate-200/60 overflow-hidden sticky top-6">
-              <div className="bg-gradient-to-r from-slate-50 to-white border-b border-slate-200/60 px-6 py-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-1 h-6 bg-gradient-to-b from-primary to-primary/60 rounded-full"></div>
-                  <h2 className="text-lg font-bold text-slate-800">Preview</h2>
-                </div>
-              </div>
               <CandidateViewCorner candidate={hoveredCandidate} />
             </div>
           </div>
         </div>
 
-        {/* Top Candidates Table */}
+        {/* Candidate Summary Table */}
         <div className="mb-8">
           <div className="bg-white rounded-xl shadow-lg shadow-slate-200/50 border border-slate-200/60 overflow-hidden">
             <div className="bg-gradient-to-r from-slate-50 to-white border-b border-slate-200/60 px-6 py-4">
               <div className="flex items-center gap-3">
                 <div className="w-1 h-6 bg-gradient-to-b from-primary to-primary/60 rounded-full"></div>
                 <div>
-                  <h2 className="text-lg font-bold text-slate-800">Top Candidates</h2>
+                  <h2 className="text-lg font-bold text-slate-800">Candidate Summary Table</h2>
                   <p className="text-xs text-slate-500 mt-0.5">Ranked by fitting score and qualifications</p>
                 </div>
               </div>
