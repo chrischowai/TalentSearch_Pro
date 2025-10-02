@@ -31,13 +31,21 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   dataMaxFittingScore,
 }) => {
   return (
-    <div className="bg-card border rounded-lg p-4 mb-6">
+    <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Fitting Score Filter */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-foreground">
-            Fitting Score: {fittingScoreRange[0]}–{fittingScoreRange[1]}
-          </label>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+              <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
+              Fitting Score
+            </label>
+            <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-full">
+              {fittingScoreRange[0]}–{fittingScoreRange[1]}
+            </span>
+          </div>
 
           <SliderPrimitive.Root
             value={fittingScoreRange}
@@ -63,9 +71,14 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         </div>
 
         {/* Qualification Filter */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-foreground">
-            Qualification
+        <div className="space-y-3">
+          <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+            <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+            </svg>
+            Qualification Level
           </label>
           <Select value={qualification} onValueChange={onQualificationChange}>
             <SelectTrigger>
@@ -82,8 +95,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         </div>
 
         {/* Keyword Search */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-foreground">
+        <div className="space-y-3">
+          <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+            <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
             Keyword Search
           </label>
           <div className="relative">
@@ -96,6 +112,24 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               aria-label="Keyword search"
             />
           </div>
+        </div>
+      </div>
+
+      {/* Quick Filter Stats */}
+      <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-200/60">
+        <div className="text-center p-2 bg-gradient-to-br from-blue-50 to-transparent rounded-lg border border-blue-100/60">
+          <div className="text-lg font-bold text-blue-600">
+            {fittingScoreRange[1] - fittingScoreRange[0]}
+          </div>
+          <div className="text-[10px] text-slate-600 font-medium">Score Range</div>
+        </div>
+        <div className="text-center p-2 bg-gradient-to-br from-green-50 to-transparent rounded-lg border border-green-100/60">
+          <div className="text-lg font-bold text-green-600">Active</div>
+          <div className="text-[10px] text-slate-600 font-medium">Filter Status</div>
+        </div>
+        <div className="text-center p-2 bg-gradient-to-br from-purple-50 to-transparent rounded-lg border border-purple-100/60">
+          <div className="text-lg font-bold text-purple-600">Live</div>
+          <div className="text-[10px] text-slate-600 font-medium">Results</div>
         </div>
       </div>
     </div>
