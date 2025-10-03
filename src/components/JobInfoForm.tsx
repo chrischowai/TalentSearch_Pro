@@ -65,7 +65,7 @@ export const JobInfoForm: React.FC<JobInfoFormProps> = ({
         <div className="space-y-3">
           <Label htmlFor="num-profiles" className="text-sm font-semibold text-slate-700 uppercase tracking-wider flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
-            Target Profiles
+            No. of Profiles
             <span className="text-xs text-red-500 font-normal normal-case">*</span>
           </Label>
           <div className="relative">
@@ -141,7 +141,7 @@ export const JobInfoForm: React.FC<JobInfoFormProps> = ({
           </div>
           <div className="flex-1">
             <p className="text-sm font-medium text-blue-900">Search Configuration</p>
-            <p className="text-xs text-blue-700 mt-0.5">Define your target role and the number of candidate profiles you want to analyze per batch.</p>
+            <p className="text-xs text-blue-700 mt-0.5">Define your target role and the number of candidate profiles you want to seize in Linkedin per batch.</p>
           </div>
         </div>
       </div>
