@@ -114,24 +114,6 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           </div>
         </div>
       </div>
-
-      {/* Quick Filter Stats */}
-      <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-200/60">
-        <div className="text-center p-2 bg-gradient-to-br from-blue-50 to-transparent rounded-lg border border-blue-100/60">
-          <div className="text-lg font-bold text-blue-600">
-            {fittingScoreRange[1] - fittingScoreRange[0]}
-          </div>
-          <div className="text-[10px] text-slate-600 font-medium">Score Range</div>
-        </div>
-        <div className="text-center p-2 bg-gradient-to-br from-green-50 to-transparent rounded-lg border border-green-100/60">
-          <div className="text-lg font-bold text-green-600">Active</div>
-          <div className="text-[10px] text-slate-600 font-medium">Filter Status</div>
-        </div>
-        <div className="text-center p-2 bg-gradient-to-br from-purple-50 to-transparent rounded-lg border border-purple-100/60">
-          <div className="text-lg font-bold text-purple-600">Live</div>
-          <div className="text-[10px] text-slate-600 font-medium">Results</div>
-        </div>
-      </div>
     </div>
   );
 };
