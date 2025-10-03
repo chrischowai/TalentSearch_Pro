@@ -106,6 +106,22 @@ export const DashboardPage: React.FC = () => {
     window.location.reload();
   };
 
+  // Refresh data function
+  const handleRefreshData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await GoogleSheetsService.fetchCandidateData();
+      setAllCandidates(data);
+      setFittingScoreRange([0, 100]);
+    } catch (err) {
+      setError('Failed to refresh candidate data');
+      console.error('Error refreshing candidate data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Handlers for filter changes
   const handleFittingScoreRangeChange = useCallback((value: [number, number]) => {
     setFittingScoreRange(value);
@@ -176,14 +192,25 @@ export const DashboardPage: React.FC = () => {
                   </p>
                 </div>
               </div>
-              <Button 
-                variant="secondary" 
-                onClick={handleGoBack} 
-                className="bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-sm px-6 py-3 text-lg font-bold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
-              >
-                <ArrowLeft className="h-5 w-5 mr-3" />
-                Back to Intake
-              </Button>
+              <div className="flex gap-3">
+                <Button 
+                  variant="secondary" 
+                  onClick={handleRefreshData}
+                  disabled={loading}
+                  className="bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-sm px-6 py-3 text-lg font-bold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <RefreshCw className={`h-5 w-5 mr-3 ${loading ? 'animate-spin' : ''}`} />
+                  Refresh Data
+                </Button>
+                <Button 
+                  variant="secondary" 
+                  onClick={handleGoBack} 
+                  className="bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-sm px-6 py-3 text-lg font-bold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
+                >
+                  <ArrowLeft className="h-5 w-5 mr-3" />
+                  Back to Intake
+                </Button>
+              </div>
             </div>
           </div>
         </div>
