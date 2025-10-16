@@ -185,7 +185,7 @@ export const DashboardPage: React.FC = () => {
                 </div>
                 <div>
                   <h1 className="text-3xl font-bold mb-1">
-                    Candidate Insights Dashboard
+                    TalentSearch Pro Dashboard
                   </h1>
                   <p className="text-sm text-white/80 font-medium">
                     Advanced Analytics & Talent Intelligence
