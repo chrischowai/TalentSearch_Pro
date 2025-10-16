@@ -287,7 +287,7 @@ export const DashboardPage: React.FC = () => {
               <div className="bg-gradient-to-r from-slate-50 to-white border-b border-slate-200/60 px-6 py-4">
                 <div className="flex items-center gap-3">
                   <div className="w-1 h-6 bg-gradient-to-b from-primary to-primary/60 rounded-full"></div>
-                  <h2 className="text-lg font-bold text-slate-800">Filter Candidates</h2>
+                  <h2 className="text-lg font-bold text-slate-800">Intelligent Candidate Filter</h2>
                 </div>
               </div>
               <div className="p-6">
