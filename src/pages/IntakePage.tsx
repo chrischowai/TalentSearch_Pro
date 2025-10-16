@@ -159,7 +159,7 @@ export const IntakePage: React.FC = () => {
                 </div>
                 
                 <h1 className="text-5xl font-bold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 bg-clip-text text-transparent mb-3">
-                  LinkedIn Talent Search
+                  TalentSearch Pro
                 </h1>
                 
                 <p className="text-lg text-slate-600 font-medium mb-4">
